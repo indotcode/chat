@@ -1,6 +1,6 @@
 import UserAndChats from './../Models/UserAndChats'
 
-export default async (response: any, ws: any, wsClient: any) => {
+export default async (request: any, ws: any, wsClient: any) => {
     const chats = await UserAndChats.find({user_id: wsClient.user}).populate('chats').then((response:any) => {
         return response.map((item:any) => {
             return {
@@ -19,6 +19,6 @@ export default async (response: any, ws: any, wsClient: any) => {
         })
         send[i] = item;
     }
-    wsClient.send(JSON.stringify(send))
-    // console.log(s)
+    request.response = send
+    wsClient.send(JSON.stringify(request))
 }

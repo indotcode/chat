@@ -2,6 +2,7 @@
 import mongoose from "mongoose"
 import config from "./../config"
 import Chats from "./Chats"
+import User from "./User";
 const { Schema } = mongoose
 mongoose.connect(config.connect, config.params)
 
@@ -11,7 +12,10 @@ const schema:any = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: Chats
     },
-    user_id: Number,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User
+    },
     publishDate: {
         type: Date,
         required: true

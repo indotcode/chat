@@ -1,3 +1,3 @@
-export default (response: any, ws: any, wsClient: any) => {
+export default (request: any, ws: any, wsClient: any) => {
 
 }
