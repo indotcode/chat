@@ -11,14 +11,14 @@ ws.on('connection', (wsClient: any) => {
         console.log('Пользователь отключился');
     });
 
-    wsClient.on('message', function (message: any) {
+    wsClient.on('message', async function (message: any) {
         try {
             const response = JSON.parse(message);
-            route.forEach(item => {
+            for (const item of route) {
                 if(response.action === item.action){
-                    item.method(response, ws, wsClient)
+                    await item.method(response, ws, wsClient)
                 }
-            })
+            }
             // switch (jsonMessage.action) {
             //     case 'ECHO':
             //         // const mes: any = await Chat.create({

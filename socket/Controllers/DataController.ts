@@ -1,24 +1,15 @@
 import UserAndChats from './../Models/UserAndChats'
+import User from "../Models/User";
+import UserService from "../Services/UserService";
+import ChatsService from "../Services/ChatsService"
 
 export default async (request: any, ws: any, wsClient: any) => {
-    const chats = await UserAndChats.find({user_id: wsClient.user}).populate('chats').then((response:any) => {
-        return response.map((item:any) => {
-            return {
-                id: item._id,
-                chats_id: item.chats._id,
-            }
-        })
-    });
-    let send: any = []
-    for (const item of chats) {
-        const i: any = chats.indexOf(item);
-        item.ids = await UserAndChats.find({chats: item.chats_id}).then((response: any) => {
-            return response.map((item: any) => {
-                return item.user_id
-            })
-        })
-        send[i] = item;
-    }
-    request.response = send
-    wsClient.send(JSON.stringify(request))
+    const userResult: any = await UserService.save(request.user).then()
+    wsClient.user = request.user.id
+    const chatsResult: any = await ChatsService.result(userResult)
+    const activeChat = chatsResult[0].chats._id
+    wsClient.send(JSON.stringify({
+        action: request.action,
+        response: {activeChat, chatsResult}
+    }))
 }

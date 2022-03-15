@@ -1,9 +1,11 @@
 import Chats from './../Models/Chats'
 import UserAndChats from './../Models/UserAndChats'
 import UserService from "../Services/UserService";
+import name from "../Helper/name";
 
 export default async (request: any, ws: any, wsClient: any) => {
     const res: any = await Chats.create({
+        name: name(request.user_recipient),
         publishDate: (new Date())
     })
     const user_sender_res: any = await UserService.save(request.user_sender)
