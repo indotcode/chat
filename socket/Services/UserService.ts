@@ -11,6 +11,7 @@ class UserService
             role: user.role,
             phone: user.phone,
             email: user.email,
+            avatar: user.avatar,
             visitDate: (new Date())
         }
         if(!userExists){
@@ -18,7 +19,6 @@ class UserService
         } else {
             await User.updateOne({user_id: user.id}, data)
         }
-
         return User.findOne({user_id: user.id});
     }
 }

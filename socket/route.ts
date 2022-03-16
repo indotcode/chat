@@ -10,5 +10,13 @@ export default [
     {
         action: 'NEW_CHATS',
         method: require('./Controllers/NewChatsController').default
+    },
+    {
+        action: 'VIEW_CHAT',
+        method: require('./Controllers/ViewChatController').default
+    },
+    {
+        action: 'ADD_MESSAGE',
+        method: require('./Controllers/AddMessageController').default
     }
 ]

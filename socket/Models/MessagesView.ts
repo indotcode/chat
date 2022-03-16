@@ -1,30 +1,25 @@
 // @ts-ignore
 import mongoose from "mongoose"
 import config from "./../config"
-import Chats from "./Chats";
 import User from "./User";
+import Messages from "./Messages";
 const { Schema } = mongoose
 mongoose.connect(config.connect, config.params)
 
 
 const schema:any = new Schema({
-    chats: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Chats
-    },
-    user:{
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: User
     },
-    message: String,
-    type: {
-        type: String,
-        default: 'message'
+    messages: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Messages
     },
-    publishDate: {
-        type: Date,
-        required: true
-    }
+    view: {
+        type: Boolean,
+        default: false
+    },
 })
 
-export default mongoose.model('messages', schema);
+export default mongoose.model('messages_view', schema);
