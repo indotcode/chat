@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "server": "nodemon socket/socket-server.ts",
+    "seeder": "ts-node socket/Seeders/BaseSeeder.ts",
     "mongodump": "mongodump --db=stock-encoding",
     "mongorestore": "mongorestore  dump/",
     "swagger": "nodemon swagger/index.js"

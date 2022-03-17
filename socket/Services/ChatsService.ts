@@ -17,6 +17,7 @@ class ChatsService
                 }
             })
         });
+
         let send: any = []
         for (const item of chats) {
             const i: any = chats.indexOf(item);
@@ -51,22 +52,10 @@ class ChatsService
     }
 
     getMessages = async (chats_id: any) => {
-        // const user: any = await User.findOne({user_id: user_id})
-        // const messages: any = await Messages.create({
-        //     chats: chats_id,
-        //     user: user._id,
-        //     message: message,
-        //     publishDate: (new Date())
-        // })
-        // await UserAndChats.find({chats: chats_id}, 'user').then(r => r.map(async (idUser: any) => {
-        //     await MessagesView.create({
-        //         user: idUser.user,
-        //         messages: messages._id,
-        //         view: idUser.user.toString() === user._id.toString()
-        //     })
-        // }))
         return await Messages.find({chats: chats_id}).populate('user').then((res:any) => {
-            return res
+            return res.map((item: any) => {
+                return messageConvert(item)
+            })
         });
     }
 }

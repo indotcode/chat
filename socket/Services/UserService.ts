@@ -1,14 +1,17 @@
 import User from './../Models/User'
 import name from './../Helper/name'
+
 class UserService
 {
     save = async (user: any) => {
+        if(user.id === null){
+            throw 'Нет id пользователя';
+        }
         const userExists: any = await User.exists({user_id: user.id})
         const data = {
             user_id: user.id,
             name: name(user),
             slug: "@"+user.id,
-            role: user.role,
             phone: user.phone,
             email: user.email,
             avatar: user.avatar,

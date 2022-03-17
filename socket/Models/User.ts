@@ -8,10 +8,18 @@ const schema:any = new Schema({
     user_id: Number,
     name: String,
     slug: String,
-    role: Number,
-    phone: String,
-    email: String,
-    avatar: String,
+    phone: {
+        type: String,
+        required: false
+    },
+    email: {
+        type: String,
+        required: false
+    },
+    avatar: {
+        type: String,
+        required: false
+    },
     visitDate: {
         type: Date,
         required: true
