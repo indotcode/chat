@@ -4,11 +4,5 @@ export default {
     params: {
         useNewUrlParser: true,
         useUnifiedTopology: true
-    },
-    apiGate: [
-        {
-            domain: "https://demo.fsego.com",
-            code: "qe32ed3sf223s2wd2s332r3"
-        }
-    ]
+    }
 }

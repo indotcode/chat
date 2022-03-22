@@ -1,11 +1,11 @@
-import UserService from "../Services/UserService";
-import ChatsService from "../Services/ChatsService"
+import User from "../Models/User";
 import DataService from "../Services/DataService";
+import Member from "../Models/Member";
 
 export default async (request: any, ws: any, wsClient: any) => {
     try {
-        const userResult: any = await UserService.save(request.user)
-        wsClient.user = request.user.id
+        const userResult: any = await User.findOne({user_id: wsClient.user});
+        await Member.deleteOne({ chats: request.chats_id, user: userResult._id })
         const response: any = await DataService.chatAndMessages(userResult, request)
         wsClient.send(JSON.stringify({
             action: request.action,
@@ -17,5 +17,4 @@ export default async (request: any, ws: any, wsClient: any) => {
             response: err
         }))
     }
-
 }

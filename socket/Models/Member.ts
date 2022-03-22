@@ -16,10 +16,9 @@ const schema:any = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: User
     },
-    publishDate: {
-        type: Date,
-        required: true
-    }
+    updated_at: Date,
+    created_at: Date,
+    deleted_at: Date
 })
 
-export default mongoose.model('user_and_chats', schema);
+export default mongoose.model('member', schema);

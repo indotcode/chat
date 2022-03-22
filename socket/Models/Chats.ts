@@ -6,10 +6,13 @@ mongoose.connect(config.connect, config.params)
 
 const schema:any = new Schema({
     name: String,
-    publishDate: {
-        type: Date,
+    number: Number,
+    chat_key: {
+        type: String,
         required: true
-    }
+    },
+    updated_at: Date,
+    created_at: Date,
+    deleted_at: Date
 })
-
 export default mongoose.model('chats', schema);

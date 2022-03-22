@@ -20,10 +20,13 @@ const schema:any = new Schema({
         type: String,
         required: false
     },
-    visitDate: {
+    visit_at: {
         type: Date,
         required: true
-    }
+    },
+    updated_at: Date,
+    created_at: Date,
+    deleted_at: Date
 })
 
 export default mongoose.model('user', schema);

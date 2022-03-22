@@ -1,32 +1,29 @@
 import Chats from './../Models/Chats'
-import UserAndChats from './../Models/UserAndChats'
 import UserService from "../Services/UserService";
 import name from "../Helper/name";
+import Member from "../Models/Member";
 
 export default async (request: any, ws: any, wsClient: any) => {
     try {
-        const user_sender_res: any = await UserService.save(request.user_sender)
-        const user_recipient_res: any = await UserService.save(request.user_recipient)
+        let users: any = [
+            await UserService.save(request.user_sender),
+            await UserService.save(request.user_recipient)
+        ];
+        const number: number = await Chats.estimatedDocumentCount();
         const res: any = await Chats.create({
             name: name(request.user_recipient),
-            publishDate: (new Date())
+            number: number + 1,
+            chat_key: request.chat_key,
+            updated_at: (new Date()),
+            created_at: (new Date())
         })
 
-        const user_sender: any = await UserAndChats.exists({chats: res._id, user: user_sender_res._id})
-        if(!user_sender){
-            await UserAndChats.create({
+        for (const user of users) {
+            await Member.create({
                 chats: res._id,
-                user: user_sender_res._id,
-                publishDate: (new Date())
-            })
-        }
-
-        const user_recipient: any = await UserAndChats.exists({chats: res._id, user: user_recipient_res._id})
-        if(!user_recipient){
-            await UserAndChats.create({
-                chats: res._id,
-                user: user_recipient_res._id,
-                publishDate: (new Date())
+                user: user._id,
+                updated_at: (new Date()),
+                created_at: (new Date())
             })
         }
     } catch (err){

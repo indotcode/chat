@@ -5,14 +5,11 @@ const { Schema } = mongoose
 mongoose.connect(config.connect, config.params)
 
 const schema:any = new Schema({
-    domain: {
-        type: String,
-        required: true
-    },
-    code: {
-        type: String,
-        required: true
-    }
+    name: String,
+    url: String,
+    type: String,
+    updated_at: Date,
+    created_at: Date,
+    deleted_at: Date
 })
-
-export default mongoose.model('api_gate', schema);
+export default mongoose.model('files', schema);
