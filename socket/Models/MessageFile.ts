@@ -21,7 +21,10 @@ const schema:any = new Schema({
     },
     updated_at: Date,
     created_at: Date,
-    deleted_at: Date
+    deleted: {
+        type: Boolean,
+        default: false
+    }
 })
 
 export default mongoose.model('message_file', schema);

@@ -13,34 +13,16 @@ ws.on('connection', (wsClient: any) => {
 
     wsClient.on('message', async function (message: any) {
         try {
-            const response = JSON.parse(message);
-            for (const item of route) {
-                if(response.action === item.action){
-                    await item.method(response, ws, wsClient)
+            if(message !== 'ping'){
+                const response = JSON.parse(message);
+                for (const item of route) {
+                    if(response.action === item.action){
+                        await item.method(response, ws, wsClient)
+                    }
                 }
             }
-            // switch (jsonMessage.action) {
-            //     case 'ECHO':
-            //         // const mes: any = await Chat.create({
-            //         //     message: jsonMessage.message,
-            //         //     user: jsonMessage.user,
-            //         //     code: jsonMessage.code,
-            //         //     publishDate: (new Date())
-            //         // });
-            //         // const messageItem:any = await Chat.findById(mes._id).populate('user')
-            //         // ws.clients.forEach((client: any) => {
-            //         //     if (client.readyState === 1 && client.code === jsonMessage.code) {
-            //         //         const result = {
-            //         //             type: "ITEM",
-            //         //             result: messageItem
-            //         //         }
-            //         //         client.send(JSON.stringify(result))
-            //         //     }
-            //         // })
-            //         break;
-            // }
-        } catch (error) {
-            console.log('Ошибка', error);
+        } catch (e) {
+            console.log('Ошибка', e);
         }
     });
 });

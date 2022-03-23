@@ -5,7 +5,7 @@ import Member from "../Models/Member";
 export default async (request: any, ws: any, wsClient: any) => {
     try {
         const userResult: any = await User.findOne({user_id: wsClient.user});
-        await Member.deleteOne({ chats: request.chats_id, user: userResult._id })
+        await Member.updateOne({ chats: request.chats_id, user: userResult._id }, {deleted: true})
         const response: any = await DataService.chatAndMessages(userResult, request)
         wsClient.send(JSON.stringify({
             action: request.action,

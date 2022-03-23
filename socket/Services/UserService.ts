@@ -1,7 +1,7 @@
 import User from './../Models/User'
-import name from './../Helper/name'
+import Service from "./Service";
 
-class UserService
+class UserService extends Service
 {
     public save = async (user: any) => {
         if(user.id === null){
@@ -10,7 +10,7 @@ class UserService
         const userExists: any = await User.exists({user_id: user.id})
         let data = {
             user_id: user.id,
-            name: name(user),
+            name: this.userName(user),
             slug: "@"+user.id,
             phone: user.phone,
             email: user.email,

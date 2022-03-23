@@ -1,6 +1,7 @@
 import ChatsService from "./ChatsService";
+import Service from "./Service";
 
-class DataService
+class DataService extends Service
 {
     public chatAndMessages = async (userResult: any, request: any) => {
         const chatsResult: any = await ChatsService.result(userResult, request)

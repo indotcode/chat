@@ -1,20 +1,20 @@
-import {dateInfo} from "../Helper/date"
 import User from "../Models/User";
 import Messages from "../Models/Messages";
-import MessageView from "../Models/MessageView";
 import Member from "../Models/Member";
 import Chats from "../Models/Chats";
+import UserService from "./UserService";
+import Service from "./Service";
 
-class ChatsService
+class ChatsService extends Service
 {
     public result = async (userResult: any, request: any) => {
-        const user_id = userResult._id
-        const chats: any = await Member.find({user: user_id}).sort({field: 'asc', publishDate: -1}).populate('chats').then((response:any) => {
+        const user_id: any = userResult._id
+        const chats: any = await Member.find({user: user_id, deleted: false}).sort({field: 'asc', publishDate: -1}).populate('chats').then((response:any) => {
             return response.map((item:any) => {
                 if(request.chat_key === item.chats.chat_key){
                     return {
                         chats: item.chats,
-                        date: dateInfo(item.chats.created_at)
+                        date: this.dateInfo(item.chats.created_at)
                     }
                 }
             })
@@ -27,6 +27,7 @@ class ChatsService
                     return item
                 })
             })
+            item.names = this.namesChat(user_id, item.users)
             send[i] = item;
         }
         return send;
@@ -49,54 +50,44 @@ class ChatsService
         // //         view: idUser.user.toString() === user._id.toString()
         // //     })
         // // }))
-        return await Messages.findById(messages._id).then(async (item:any) => {
-            return this.messages(item)
-        });
+        const message: any =  await Messages.findById(messages._id);
+        return await this.messagesPdo(message)
     }
 
     public getMessages = async (chats_id: any) => {
-        return await Messages.find({chats: chats_id}).then((res:any) => {
-            return res.map((item: any) => {
-                return this.messages(item)
-            })
-        });
+        const messages: any = await Messages.find({chats: chats_id}).exec();
+        let result: any = []
+        for (const item of messages){
+            const i: any = messages.indexOf(item);
+            result[i] = await this.messagesPdo(item)
+        }
+        return result;
     }
 
-    private messages = (item: any) => {
-        const member: any = Member.findById(item.member).populate('user').exec()
-        // const chats: any = await Chats.findById(item.chats).exec()
-        return {
-            _id: item._id,
-            type: item.type,
-            // chats: chats,
-            // member: member,
-            text: item.text,
-            date: dateInfo(item.created_at)
+    public  addNewChats = async (user_sender: any, user_recipient: any, chat_key: string) => {
+        let users: any = [
+            await UserService.save(user_sender),
+            await UserService.save(user_recipient)
+        ];
+        let number: number = await Chats.estimatedDocumentCount();
+        number = number + 1;
+        const res: any = await Chats.create({
+            name: 'Новый чат №' + number,
+            number: number,
+            chat_key: chat_key,
+            updated_at: (new Date()),
+            created_at: (new Date())
+        })
+
+        for (const user of users) {
+            await Member.create({
+                chats: res._id,
+                user: user._id,
+                updated_at: (new Date()),
+                created_at: (new Date())
+            })
         }
     }
-
-    // private messages = (item: any) => {
-    //     console.log(item)
-    //     // const member: any = await Member.findById(item.member).populate('user').exec()
-    //     // const chats: any = await Chats.findById(item.chats).exec()
-    //     // let data = {
-    //     //     _id: item._id,
-    //     //     type: item.type,
-    //     //     chats: chats,
-    //     //     member: member,
-    //     //     text: item.text,
-    //     //     date: dateInfo(item.created_at)
-    //     // }
-    //     // console.log(data)
-    //     return {
-    //         _id: item._id,
-    //         type: item.type,
-    //         // chats: chats,
-    //         // member: member,
-    //         text: item.text,
-    //         date: dateInfo(item.created_at)
-    //     }
-    // }
 }
 
 
