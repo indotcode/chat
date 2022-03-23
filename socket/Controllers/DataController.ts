@@ -9,7 +9,7 @@ export default async (request: any, ws: any, wsClient: any) => {
         wsClient.userSystem = userResult._id
         wsClient.activeChat = response.activeChat
         wsClient.send(JSON.stringify({
-            action: request.action,
+            action: "DATA",
             response: response
         }))
     } catch (err){

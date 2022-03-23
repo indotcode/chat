@@ -33,12 +33,13 @@ class ChatsService extends Service
         return send;
     }
 
-    public addMessage = async (chats_id: any, user_id: any, text: String) => {
+    public addMessage = async (chats_id: any, user_id: any, text: string, type: string = "message") => {
         const user: any = await User.findOne({user_id: user_id})
         const member: any = await Member.findOne({chats: chats_id, user: user._id})
         const messages: any = await Messages.create({
             chats: chats_id,
             member: member._id,
+            type: type,
             text: text,
             updated_at: (new Date()),
             created_at: (new Date())

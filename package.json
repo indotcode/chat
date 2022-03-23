@@ -5,10 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "server": "nodemon socket/socket-server.ts",
-    "seeder": "ts-node socket/Seeders/BaseSeeder.ts",
-    "mongodump": "mongodump --db=stock-encoding",
-    "mongorestore": "mongorestore  dump/",
-    "swagger": "nodemon swagger/index.js"
+    "seeder": "ts-node socket/Seeders/BaseSeeder.ts"
   },
   "author": "indotcode",
   "license": "ISC",
@@ -18,7 +15,6 @@
     "express": "^4.17.1",
     "md5": "^2.3.0",
     "mongoose": "^5.13.3",
-    "swagger-ui-dist": "^4.6.2",
     "ws": "^7.4.3"
   },
   "devDependencies": {
