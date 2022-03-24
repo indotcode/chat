@@ -28,5 +28,10 @@ export default [
         //Просмотр сообщения
         action: 'VIEW_MESSAGE',
         method: require('./Controllers/ViewMessageController').default
+    },
+    {
+        //Не просмотренные сообщения
+        action: 'COUNT_MESSAGES',
+        method: require('./Controllers/CountMessagesController').default
     }
 ]

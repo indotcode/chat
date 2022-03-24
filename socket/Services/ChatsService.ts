@@ -101,6 +101,16 @@ class ChatsService extends Service
     public getMemberOne = async (chats_id: any, user_id: any) => {
         return Member.findOne({chats: chats_id, user: user_id});
     }
+
+    public getCountMessages = async (user_id: any) => {
+        const membersChatsIds: any = await Member.find({user: user_id}, '_id')
+        let count: number = 0;
+        for (const item of membersChatsIds){
+            const view: any = await MessageView.find({member: item._id, view: false})
+            console.log(view)
+        }
+        return membersChatsIds;
+    }
 }
 
 
