@@ -4,6 +4,8 @@ import Member from "../Models/Member";
 import Chats from "../Models/Chats";
 import UserService from "./UserService";
 import Service from "./Service";
+import MessageView from "../Models/MessageView";
+import chats from "../Models/Chats";
 
 class ChatsService extends Service
 {
@@ -44,14 +46,21 @@ class ChatsService extends Service
             updated_at: (new Date()),
             created_at: (new Date())
         })
-        // // await UserAndChats.find({chats: chats_id}, 'user').then(r => r.map(async (idUser: any) => {
-        // //     await MessagesView.create({
-        // //         user: idUser.user,
-        // //         messages: messages._id,
-        // //         view: idUser.user.toString() === user._id.toString()
-        // //     })
-        // // }))
-        const message: any =  await Messages.findById(messages._id);
+        const members: any = await Member.find({chats: chats_id, deleted: false})
+        for(const item of members){
+            let create = {
+                member: item._id,
+                messages: messages._id,
+                view: false,
+                updated_at: (new Date()),
+                created_at: (new Date())
+            }
+            if(user._id.toString() === item.user.toString()){
+                create.view = true
+            }
+            await MessageView.create(create)
+        }
+        const message: any = await Messages.findById(messages._id);
         return await this.messagesPdo(message)
     }
 
@@ -65,7 +74,7 @@ class ChatsService extends Service
         return result;
     }
 
-    public  addNewChats = async (user_sender: any, user_recipient: any, chat_key: string) => {
+    public addNewChats = async (user_sender: any, user_recipient: any, chat_key: string) => {
         let users: any = [
             await UserService.save(user_sender),
             await UserService.save(user_recipient)
@@ -79,7 +88,6 @@ class ChatsService extends Service
             updated_at: (new Date()),
             created_at: (new Date())
         })
-
         for (const user of users) {
             await Member.create({
                 chats: res._id,
@@ -88,6 +96,10 @@ class ChatsService extends Service
                 created_at: (new Date())
             })
         }
+    }
+
+    public getMemberOne = async (chats_id: any, user_id: any) => {
+        return Member.findOne({chats: chats_id, user: user_id});
     }
 }
 

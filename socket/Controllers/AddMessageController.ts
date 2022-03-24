@@ -6,7 +6,7 @@ export default async (request: any, ws: any, wsClient: any) => {
     ws.clients.forEach((client: any) => {
         if(client.activeChat.toString() === request.chats_id.toString()){
             client.send(JSON.stringify({
-                action: request.action,
+                action: "ADD_MESSAGE",
                 response: {message}
             }))
         }

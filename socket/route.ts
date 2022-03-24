@@ -11,8 +11,8 @@ export default [
     },
     {
         //Переключения чата
-        action: 'VIEW_CHAT',
-        method: require('./Controllers/ViewChatController').default
+        action: 'SWITCH_CHAT',
+        method: require('./Controllers/SwitchChatController').default
     },
     {
         //Выход пользователя из чата
@@ -23,5 +23,10 @@ export default [
         //Отправка сообщения
         action: 'ADD_MESSAGE',
         method: require('./Controllers/AddMessageController').default
+    },
+    {
+        //Просмотр сообщения
+        action: 'VIEW_MESSAGE',
+        method: require('./Controllers/ViewMessageController').default
     }
 ]

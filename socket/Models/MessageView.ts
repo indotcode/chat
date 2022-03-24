@@ -6,7 +6,6 @@ import Member from "./Member";
 const { Schema } = mongoose
 mongoose.connect(config.connect, config.params)
 
-
 const schema:any = new Schema({
     member: {
         type: mongoose.Schema.Types.ObjectId,

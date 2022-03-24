@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import config from "./../config"
 import Chats from "./Chats";
 import Member from "./Member";
+import MessageView from "./MessageView";
 const { Schema } = mongoose
 mongoose.connect(config.connect, config.params)
 
