@@ -2,16 +2,16 @@ import User from "../Models/User";
 import Messages from "../Models/Messages";
 import Member from "../Models/Member";
 import Chats from "../Models/Chats";
+import chats from "../Models/Chats";
 import UserService from "./UserService";
 import Service from "./Service";
 import MessageView from "../Models/MessageView";
-import chats from "../Models/Chats";
 
 class ChatsService extends Service
 {
     public result = async (userResult: any, request: any) => {
         const user_id: any = userResult._id
-        const chats: any = await Member.find({user: user_id, deleted: false}).sort({field: 'asc', publishDate: -1}).populate('chats').then((response:any) => {
+        const chats: any = await Member.find({user: user_id, deleted: false}).sort({field: 'asc', created_at: -1}).populate('chats').then((response:any) => {
             return response.map((item:any) => {
                 if(request.chat_key === item.chats.chat_key){
                     return {
@@ -102,14 +102,32 @@ class ChatsService extends Service
         return Member.findOne({chats: chats_id, user: user_id});
     }
 
-    public getCountMessages = async (user_id: any) => {
+    public getMissedMessages = async (user_id: any) => {
         const membersChatsIds: any = await Member.find({user: user_id}, '_id')
-        let count: number = 0;
+        let count: number = 0
+        // let i: number = 0
+        // let messages: any = []
         for (const item of membersChatsIds){
             const view: any = await MessageView.find({member: item._id, view: false})
-            console.log(view)
+            for(const item2 of view){
+                count++
+                // messages[i++] = item2.messages
+            }
         }
-        return membersChatsIds;
+
+        // let chats: any = [],
+        //     s: number = 0
+        // for (const id of messages){
+        //     const item: any = await Messages.findById(id, 'chats').populate('chats', '_id');
+        //     if(chats.indexOf(item.chats._id.toString()) == -1){
+        //         const chats_id: any = item.chats._id.toString()
+        //         chats[s++] = chats_id;
+        //     }
+        // }
+        return {
+            count: count
+            // chats: chats
+        };
     }
 }
 

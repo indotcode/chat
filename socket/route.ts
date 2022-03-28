@@ -31,7 +31,7 @@ export default [
     },
     {
         //Не просмотренные сообщения
-        action: 'COUNT_MESSAGES',
-        method: require('./Controllers/CountMessagesController').default
+        action: 'MISSED_MESSAGES',
+        method: require('./Controllers/MissedMessagesController').default
     }
 ]
